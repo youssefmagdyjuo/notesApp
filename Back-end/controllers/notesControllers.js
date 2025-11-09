@@ -24,18 +24,20 @@ const addNote = async (req, res) => {
         if (!title || !content) {
             return res.status(400).json({
                 succsess: false,
-                message: 'fill inputs'
+                message: 'Title And Content Are Required'
             })
         }
-        const newNote = await note.create({ title, content })
+        await note.create({ title, content })
+        const notes = await note.find({})
         res.status(200).json({
             succsess: true,
-            data: newNote,
+            data: notes,
             message: 'add note successfully'
         })
     } catch (error) {
+        console.log(error)
         res.status(500).json({
-            message: error.message
+            message: 'Title And Content Are Required'
         })
     }
 
@@ -53,10 +55,10 @@ const updateNote = async (req, res) => {
                 message: `not found note with id :  ${id}`
             })
         }
-        const updatedNoteDate = await note.findById(id);
+        const notes = await note.find({})
         res.status(200).json({
             succsess: true,
-            data: updatedNoteDate,
+            data: notes,
             message: 'update note successfully'
         })
     } catch (error) {
@@ -80,7 +82,7 @@ const deleteNote = async (req, res) => {
         const notes = await note.find({})
         res.status(200).json({
             succsess: true,
-            data:notes,
+            data: notes,
             message: 'note deleted successfully'
         })
     } catch (error) {
